@@ -1,5 +1,4 @@
 import {
-  Image,
   ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
@@ -9,14 +8,14 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import styles from "./RegistrationScreenCss";
+import styles from "./LoginScreenCss";
 
-const RegistrationScreen = () => {
+const LoginScreen = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={-185}
+        keyboardVerticalOffset={-250}
       >
         <View style={styles.container}>
           <ImageBackground
@@ -25,22 +24,22 @@ const RegistrationScreen = () => {
             style={styles.backgroundImg}
           >
             <View style={styles.registrationWrapper}>
-              <Text style={styles.title}>Реєстрація</Text>
-              <TextInput style={styles.textInput} placeholder="Логін" />
+              <Text style={styles.title}>Увійти</Text>
               <TextInput
                 style={styles.textInput}
                 placeholder="Адреса електронної пошти"
               />
               <TextInput style={styles.textInput} placeholder="Пароль" />
               <Pressable style={styles.primaryBtn}>
-                <Text style={styles.textPrimaryBtn}>Зареєстуватися</Text>
+                <Text style={styles.textPrimaryBtn}>Увійти</Text>
               </Pressable>
-              <Text style={styles.textSignIn}>Вже є акаунт? Увійти</Text>
+              <Text style={styles.textSignIn}>
+                Немає акаунту?{" "}
+                <Text style={{ textDecorationLine: "underline" }}>
+                  Зареєструватися
+                </Text>
+              </Text>
             </View>
-            <Image
-              style={styles.addImage}
-              source={require("../../img/add_photo.png")}
-            ></Image>
           </ImageBackground>
         </View>
       </KeyboardAvoidingView>
@@ -48,4 +47,4 @@ const RegistrationScreen = () => {
   );
 };
 
-export default RegistrationScreen;
+export default LoginScreen;

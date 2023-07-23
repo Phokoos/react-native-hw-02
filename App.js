@@ -1,7 +1,7 @@
-import { StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import React from 'react';
-import CoursesList from './src/courseList';
+import RegistrationScreen from './src/Screens/RegistrationScreen';
+import LoginScreen from './src/Screens/LoginScreen';
 
 export default function App() {
 	const [fontsLoaded] = useFonts({
@@ -15,7 +15,8 @@ export default function App() {
 
 	return (
 		<>
-			<CoursesList />
+			{/* <RegistrationScreen /> */}
+			<LoginScreen />
 		</>
 	);
 }
