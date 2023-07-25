@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   ImageBackground,
   Keyboard,
@@ -11,6 +12,26 @@ import {
 } from "react-native";
 
 const LoginScreen = () => {
+  const [inputBackgroundColorEmail, setInputBackgroundColorEmail] =
+    useState("#F6F6F6");
+  const [inputBorderColorEmail, setInputBorderColorEmail] = useState("#E8E8E8");
+  const [inputBackgroundColorPassword, setInputBackgroundColorPassword] =
+    useState("#F6F6F6");
+  const [inputBorderColorPassword, setInputBorderColorPassword] =
+    useState("#E8E8E8");
+
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
+  const [showPasswordText, setShowPasswordText] = useState("Показати");
+
+  const handlePasswordVisibility = () => {
+    if (showPasswordText === "Показати") {
+      setShowPasswordText("Приховати");
+      setPasswordVisibility(!passwordVisibility);
+    } else {
+      setShowPasswordText("Показати");
+      setPasswordVisibility(!passwordVisibility);
+    }
+  };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
@@ -26,19 +47,89 @@ const LoginScreen = () => {
             <View style={styles.registrationWrapper}>
               <Text style={styles.title}>Увійти</Text>
               <TextInput
-                style={styles.textInput}
+                style={[
+                  {
+                    backgroundColor: inputBackgroundColorEmail,
+                    borderColor: inputBorderColorEmail,
+                  },
+                  styles.textInput,
+                ]}
                 placeholder="Адреса електронної пошти"
+                onFocus={() => {
+                  setInputBackgroundColorEmail("#FFFFFF");
+                  setInputBorderColorEmail("#FF6C00");
+                }}
+                onBlur={() => {
+                  setInputBackgroundColorEmail("#F6F6F6");
+                  setInputBorderColorEmail("#E8E8E8");
+                }}
               />
-              <TextInput style={styles.textInput} placeholder="Пароль" />
-              <Pressable style={styles.primaryBtn}>
+              <View style={styles.inputPasswordContainer}>
+                <TextInput
+                  style={[
+                    {
+                      backgroundColor: inputBackgroundColorPassword,
+                      borderColor: inputBorderColorPassword,
+                      paddingRight: 110,
+                    },
+                    styles.textInput,
+                  ]}
+                  name="password"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  textContentType="newPassword"
+                  secureTextEntry={passwordVisibility}
+                  enablesReturnKeyAutomatically
+                  placeholder="Пароль"
+                  onFocus={() => {
+                    setInputBackgroundColorPassword("#FFFFFF");
+                    setInputBorderColorPassword("#FF6C00");
+                  }}
+                  onBlur={() => {
+                    setInputBackgroundColorPassword("#F6F6F6");
+                    setInputBorderColorPassword("#E8E8E8");
+                  }}
+                />
+                <Pressable
+                  onPress={handlePasswordVisibility}
+                  style={styles.showPasswordBtn}
+                >
+                  <Text style={styles.showPasswordBtnText}>
+                    {showPasswordText}
+                  </Text>
+                </Pressable>
+              </View>
+              <Pressable
+                style={({ pressed }) => [
+                  {
+                    backgroundColor: pressed ? "#E8470C" : "#FF6C00",
+                    shadowColor: pressed ? "#3B1703" : "none",
+                    shadowOffset: pressed ? { height: 6 } : { height: 0 },
+                    shadowOpacity: pressed ? 0.4 : 0,
+                    shadowRadius: pressed ? 2 : 0,
+                  },
+                  styles.primaryBtn,
+                ]}
+              >
                 <Text style={styles.textPrimaryBtn}>Увійти</Text>
               </Pressable>
-              <Text style={styles.textSignIn}>
-                Немає акаунту?{" "}
-                <Text style={{ textDecorationLine: "underline" }}>
-                  Зареєструватися
-                </Text>
-              </Text>
+              <Pressable>
+                {({ pressed }) => (
+                  <Text
+                    style={[
+                      {
+                        color: pressed ? "#FF6C00" : "#1B4371",
+                      },
+                      styles.textSignIn,
+                    ]}
+                  >
+                    Немає акаунту?{" "}
+                    <Text style={{ textDecorationLine: "underline" }}>
+                      Зареєструватися
+                    </Text>
+                  </Text>
+                )}
+              </Pressable>
             </View>
           </ImageBackground>
         </View>
@@ -48,6 +139,20 @@ const LoginScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  inputPasswordContainer: {
+    height: 50,
+    position: "relative",
+  },
+  showPasswordBtn: {
+    position: "absolute",
+    right: 16,
+    top: 16,
+  },
+  showPasswordBtnText: {
+    color: "#1B4371",
+    fontSize: 16,
+    fontFamily: "Roboto-Regular",
+  },
   container: {
     flexDirection: "row",
     height: "100%",
@@ -83,15 +188,12 @@ const styles = StyleSheet.create({
     height: 50,
     width: "100%",
 
-    color: "#BDBDBD",
+    color: "#212121",
     fontSize: 16,
     fontFamily: "Roboto-Regular",
     fontWeight: "400",
 
-    backgroundColor: "#F6F6F6",
-
     borderWidth: 0.5,
-    borderColor: "#E8E8E8",
     borderRadius: 8,
   },
   primaryBtn: {
@@ -105,7 +207,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
 
-    backgroundColor: "#FF6C00",
     borderRadius: 100,
   },
   textPrimaryBtn: {
@@ -118,7 +219,6 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
     marginRight: "auto",
 
-    color: "#1B4371",
     fontSize: 16,
     fontFamily: "Roboto-Regular",
     fontWeight: "400",

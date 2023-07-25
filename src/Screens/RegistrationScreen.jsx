@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Image,
   ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
@@ -11,6 +10,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import UserPhoto from "./userPhoto";
 
 const RegistrationScreen = () => {
   const [inputBackgroundColorLogin, setInputBackgroundColorLogin] =
@@ -27,7 +27,7 @@ const RegistrationScreen = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [showPasswordText, setShowPasswordText] = useState("Показати");
 
-  const handlePasswordVisibility = (e) => {
+  const handlePasswordVisibility = () => {
     if (showPasswordText === "Показати") {
       setShowPasswordText("Приховати");
       setPasswordVisibility(!passwordVisibility);
@@ -50,6 +50,7 @@ const RegistrationScreen = () => {
             style={styles.backgroundImg}
           >
             <View style={styles.registrationWrapper}>
+              <UserPhoto />
               <Text style={styles.title}>Реєстрація</Text>
               <TextInput
                 style={[
@@ -151,10 +152,6 @@ const RegistrationScreen = () => {
                 )}
               </Pressable>
             </View>
-            <Image
-              style={styles.addImage}
-              source={require("../../img/add_photo.png")}
-            ></Image>
           </ImageBackground>
         </View>
       </KeyboardAvoidingView>
@@ -197,11 +194,21 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     position: "relative",
   },
-  addImage: {
+  photoCard: {
+    width: 120,
+    height: 120,
     position: "absolute",
     bottom: 489,
     left: "50%",
-    transform: [{ translateX: -55 }],
+    transform: [{ translateX: -50 }],
+
+    borderRadius: 16,
+    backgroundColor: "#F6F6F6",
+  },
+  plusIcon: {
+    position: "absolute",
+    right: -13,
+    bottom: 20,
   },
   title: {
     marginTop: 92,
