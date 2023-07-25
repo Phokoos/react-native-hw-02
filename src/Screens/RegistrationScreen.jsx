@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Button,
   Image,
   ImageBackground,
   Keyboard,
@@ -25,11 +24,24 @@ const RegistrationScreen = () => {
   const [inputBorderColorPassword, setInputBorderColorPassword] =
     useState("#E8E8E8");
 
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
+  const [showPasswordText, setShowPasswordText] = useState("Показати");
+
+  const handlePasswordVisibility = (e) => {
+    if (showPasswordText === "Показати") {
+      setShowPasswordText("Приховати");
+      setPasswordVisibility(!passwordVisibility);
+    } else {
+      setShowPasswordText("Показати");
+      setPasswordVisibility(!passwordVisibility);
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={-185}
+        keyboardVerticalOffset={-184}
       >
         <View style={styles.container}>
           <ImageBackground
@@ -75,40 +87,68 @@ const RegistrationScreen = () => {
                   setInputBorderColorEmail("#E8E8E8");
                 }}
               />
-              <TextInput
-                style={[
+              <View style={styles.inputPasswordContainer}>
+                <TextInput
+                  style={[
+                    {
+                      backgroundColor: inputBackgroundColorPassword,
+                      borderColor: inputBorderColorPassword,
+                      paddingRight: 110,
+                    },
+                    styles.textInput,
+                  ]}
+                  name="password"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  textContentType="newPassword"
+                  secureTextEntry={passwordVisibility}
+                  enablesReturnKeyAutomatically
+                  placeholder="Пароль"
+                  onFocus={() => {
+                    setInputBackgroundColorPassword("#FFFFFF");
+                    setInputBorderColorPassword("#FF6C00");
+                  }}
+                  onBlur={() => {
+                    setInputBackgroundColorPassword("#F6F6F6");
+                    setInputBorderColorPassword("#E8E8E8");
+                  }}
+                />
+                <Pressable
+                  onPress={handlePasswordVisibility}
+                  style={styles.showPasswordBtn}
+                >
+                  <Text style={styles.showPasswordBtnText}>
+                    {showPasswordText}
+                  </Text>
+                </Pressable>
+              </View>
+              <Pressable
+                style={({ pressed }) => [
                   {
-                    backgroundColor: inputBackgroundColorPassword,
-                    borderColor: inputBorderColorPassword,
+                    backgroundColor: pressed ? "#E8470C" : "#FF6C00",
+                    shadowColor: pressed ? "#3B1703" : "none",
+                    shadowOffset: pressed ? { height: 6 } : { height: 0 },
+                    shadowOpacity: pressed ? 0.4 : 0,
+                    shadowRadius: pressed ? 2 : 0,
                   },
-                  styles.textInput,
+                  styles.primaryBtn,
                 ]}
-                placeholder="Пароль"
-                onFocus={() => {
-                  setInputBackgroundColorPassword("#FFFFFF");
-                  setInputBorderColorPassword("#FF6C00");
-                }}
-                onBlur={() => {
-                  setInputBackgroundColorPassword("#F6F6F6");
-                  setInputBorderColorPassword("#E8E8E8");
-                }}
-                secureTextEntry={true}
-              />
-              <Pressable style={styles.primaryBtn}>
+              >
                 <Text style={styles.textPrimaryBtn}>Зареєстуватися</Text>
               </Pressable>
-              <Text style={styles.textSignIn}>Вже є акаунт? Увійти</Text>
-              <Pressable
-                style={{
-                  position: "absolute",
-                  bottom: 219,
-                  right: 50,
-                }}
-                onPress={(event) => {
-                  console.log(event);
-                }}
-              >
-                <Text style={{ color: "red" }}>Показати</Text>
+              <Pressable>
+                {({ pressed }) => (
+                  <Text
+                    style={[
+                      {
+                        color: pressed ? "#FF6C00" : "#1B4371",
+                      },
+                      styles.textSignIn,
+                    ]}
+                  >
+                    Вже є акаунт? Увійти
+                  </Text>
+                )}
               </Pressable>
             </View>
             <Image
@@ -123,6 +163,20 @@ const RegistrationScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  inputPasswordContainer: {
+    height: 50,
+    position: "relative",
+  },
+  showPasswordBtn: {
+    position: "absolute",
+    right: 16,
+    top: 16,
+  },
+  showPasswordBtnText: {
+    color: "#1B4371",
+    fontSize: 16,
+    fontFamily: "Roboto-Regular",
+  },
   container: {
     flexDirection: "row",
     height: "100%",
@@ -139,7 +193,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 549,
     backgroundColor: "white",
-    borderRadius: 25,
+    borderTopEndRadius: 25,
+    borderTopLeftRadius: 25,
     position: "relative",
   },
   addImage: {
@@ -184,7 +239,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
 
-    backgroundColor: "#FF6C00",
     borderRadius: 100,
   },
   textPrimaryBtn: {
@@ -197,7 +251,6 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
     marginRight: "auto",
 
-    color: "#1B4371",
     fontSize: 16,
     fontFamily: "Roboto-Regular",
     fontWeight: "400",
