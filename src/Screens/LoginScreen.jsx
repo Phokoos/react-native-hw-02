@@ -12,26 +12,14 @@ import {
 } from "react-native";
 
 const LoginScreen = () => {
-  const [inputBackgroundColorEmail, setInputBackgroundColorEmail] =
-    useState("#F6F6F6");
-  const [inputBorderColorEmail, setInputBorderColorEmail] = useState("#E8E8E8");
-  const [inputBackgroundColorPassword, setInputBackgroundColorPassword] =
-    useState("#F6F6F6");
-  const [inputBorderColorPassword, setInputBorderColorPassword] =
-    useState("#E8E8E8");
-
   const [passwordVisibility, setPasswordVisibility] = useState(true);
-  const [showPasswordText, setShowPasswordText] = useState("Показати");
+
+  const [activeInput, setActiveInput] = useState("none");
 
   const handlePasswordVisibility = () => {
-    if (showPasswordText === "Показати") {
-      setShowPasswordText("Приховати");
-      setPasswordVisibility(!passwordVisibility);
-    } else {
-      setShowPasswordText("Показати");
-      setPasswordVisibility(!passwordVisibility);
-    }
+    setPasswordVisibility(!passwordVisibility);
   };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
@@ -48,31 +36,22 @@ const LoginScreen = () => {
               <Text style={styles.title}>Увійти</Text>
               <TextInput
                 style={[
-                  {
-                    backgroundColor: inputBackgroundColorEmail,
-                    borderColor: inputBorderColorEmail,
-                  },
                   styles.textInput,
+                  activeInput === "email" && styles.textInputActive,
                 ]}
                 placeholder="Адреса електронної пошти"
                 onFocus={() => {
-                  setInputBackgroundColorEmail("#FFFFFF");
-                  setInputBorderColorEmail("#FF6C00");
+                  setActiveInput("email");
                 }}
                 onBlur={() => {
-                  setInputBackgroundColorEmail("#F6F6F6");
-                  setInputBorderColorEmail("#E8E8E8");
+                  setActiveInput("none");
                 }}
               />
               <View style={styles.inputPasswordContainer}>
                 <TextInput
                   style={[
-                    {
-                      backgroundColor: inputBackgroundColorPassword,
-                      borderColor: inputBorderColorPassword,
-                      paddingRight: 110,
-                    },
                     styles.textInput,
+                    activeInput === "password" && styles.textInputActive,
                   ]}
                   name="password"
                   autoCapitalize="none"
@@ -82,12 +61,10 @@ const LoginScreen = () => {
                   enablesReturnKeyAutomatically
                   placeholder="Пароль"
                   onFocus={() => {
-                    setInputBackgroundColorPassword("#FFFFFF");
-                    setInputBorderColorPassword("#FF6C00");
+                    setActiveInput("password");
                   }}
                   onBlur={() => {
-                    setInputBackgroundColorPassword("#F6F6F6");
-                    setInputBorderColorPassword("#E8E8E8");
+                    setActiveInput("none");
                   }}
                 />
                 <Pressable
@@ -95,20 +72,14 @@ const LoginScreen = () => {
                   style={styles.showPasswordBtn}
                 >
                   <Text style={styles.showPasswordBtnText}>
-                    {showPasswordText}
+                    {passwordVisibility ? "Показати" : "Приховати"}
                   </Text>
                 </Pressable>
               </View>
               <Pressable
                 style={({ pressed }) => [
-                  {
-                    backgroundColor: pressed ? "#E8470C" : "#FF6C00",
-                    shadowColor: pressed ? "#3B1703" : "none",
-                    shadowOffset: pressed ? { height: 6 } : { height: 0 },
-                    shadowOpacity: pressed ? 0.4 : 0,
-                    shadowRadius: pressed ? 2 : 0,
-                  },
                   styles.primaryBtn,
+                  pressed && styles.activePrimaryBtn,
                 ]}
               >
                 <Text style={styles.textPrimaryBtn}>Увійти</Text>
@@ -193,8 +164,14 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
     fontWeight: "400",
 
+    backgroundColor: "#F6F6F6",
+    borderColor: "#E8E8E8",
     borderWidth: 0.5,
     borderRadius: 8,
+  },
+  textInputActive: {
+    backgroundColor: "#FFFFFF",
+    borderColor: "#FF6C00",
   },
   primaryBtn: {
     maxHeight: 51,
@@ -207,7 +184,15 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
 
+    backgroundColor: "#FF6C00",
     borderRadius: 100,
+  },
+  activePrimaryBtn: {
+    backgroundColor: "#E8470C",
+    shadowColor: "#3B1703",
+    shadowOffset: { height: 6 },
+    shadowOpacity: 0.4,
+    shadowRadius: 2,
   },
   textPrimaryBtn: {
     color: "white",
