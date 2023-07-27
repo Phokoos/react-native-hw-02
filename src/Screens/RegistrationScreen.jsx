@@ -208,8 +208,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
 
     flex: 1,
-    paddingTop: 16,
-    paddingBottom: 16,
+    paddingVertical: 16,
     flexDirection: "column",
     alignItems: "center",
 

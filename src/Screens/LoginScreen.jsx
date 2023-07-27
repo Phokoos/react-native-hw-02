@@ -135,8 +135,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   registrationWrapper: {
-    paddingLeft: 16,
-    paddingRight: 16,
+    paddingHorizontal: 16,
     width: "100%",
     height: 489,
     backgroundColor: "white",
@@ -179,8 +178,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
 
     flex: 1,
-    paddingTop: 16,
-    paddingBottom: 16,
+    paddingVertical: 16,
     flexDirection: "column",
     alignItems: "center",
 
