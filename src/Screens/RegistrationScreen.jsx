@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   registrationWrapper: {
     paddingHorizontal: 16,
     width: "100%",
-    height: 549,
+    // height: 549,
     backgroundColor: "white",
     borderTopEndRadius: 25,
     borderTopLeftRadius: 25,
@@ -203,9 +203,11 @@ const styles = StyleSheet.create({
     borderColor: "#FF6C00",
   },
   primaryBtn: {
+    minHeight: 51,
     maxHeight: 51,
     marginTop: 27,
     marginBottom: 16,
+    marginTop: 43,
 
     flex: 1,
     paddingVertical: 16,
@@ -231,6 +233,7 @@ const styles = StyleSheet.create({
   textSignIn: {
     marginLeft: "auto",
     marginRight: "auto",
+    marginBottom: 90,
 
     fontSize: 16,
     fontFamily: "Roboto-Regular",

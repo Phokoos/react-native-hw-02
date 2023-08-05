@@ -111,6 +111,7 @@ const LoginScreen = () => {
 
 const styles = StyleSheet.create({
   inputPasswordContainer: {
+    marginBottom: 43,
     height: 50,
     position: "relative",
   },
@@ -137,7 +138,6 @@ const styles = StyleSheet.create({
   registrationWrapper: {
     paddingHorizontal: 16,
     width: "100%",
-    height: 489,
     backgroundColor: "white",
     borderRadius: 25,
   },
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   },
   primaryBtn: {
     maxHeight: 51,
-    marginTop: 27,
+    minHeight: 51,
     marginBottom: 16,
 
     flex: 1,
@@ -201,6 +201,7 @@ const styles = StyleSheet.create({
   textSignIn: {
     marginLeft: "auto",
     marginRight: "auto",
+    marginBottom: 150,
 
     fontSize: 16,
     fontFamily: "Roboto-Regular",
