@@ -13,8 +13,15 @@ import {
 
 const LoginScreen = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
-
   const [activeInput, setActiveInput] = useState("none");
+
+  const [emailValue, setEmailValue] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
+
+  const handleCLickBtn = () => {
+    console.log(`Email: ${emailValue}`);
+    console.log(`Password: ${passwordValue}`);
+  };
 
   const handlePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
@@ -46,6 +53,8 @@ const LoginScreen = () => {
                 onBlur={() => {
                   setActiveInput("none");
                 }}
+                value={emailValue}
+                onChangeText={setEmailValue}
               />
               <View style={styles.inputPasswordContainer}>
                 <TextInput
@@ -66,6 +75,8 @@ const LoginScreen = () => {
                   onBlur={() => {
                     setActiveInput("none");
                   }}
+                  value={passwordValue}
+                  onChangeText={setPasswordValue}
                 />
                 <Pressable
                   onPress={handlePasswordVisibility}
@@ -81,6 +92,7 @@ const LoginScreen = () => {
                   styles.primaryBtn,
                   pressed && styles.activePrimaryBtn,
                 ]}
+                onPress={handleCLickBtn}
               >
                 <Text style={styles.textPrimaryBtn}>Увійти</Text>
               </Pressable>

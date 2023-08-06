@@ -14,8 +14,17 @@ import UserPhoto from "../components/UserPhoto";
 
 const RegistrationScreen = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
-
   const [activeInput, setActiveInput] = useState("none");
+
+  const [loginValue, setLoginValue] = useState("");
+  const [emailValue, setEmailValue] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
+
+  const handleCLickBtn = () => {
+    console.log(`Login: ${loginValue}`);
+    console.log(`Email: ${emailValue}`);
+    console.log(`Password: ${passwordValue}`);
+  };
 
   const handlePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
@@ -48,6 +57,8 @@ const RegistrationScreen = () => {
                 onBlur={() => {
                   setActiveInput("none");
                 }}
+                value={loginValue}
+                onChangeText={setLoginValue}
               />
               <TextInput
                 style={[
@@ -61,6 +72,8 @@ const RegistrationScreen = () => {
                 onBlur={() => {
                   setActiveInput("none");
                 }}
+                value={emailValue}
+                onChangeText={setEmailValue}
               />
               <View style={styles.inputPasswordContainer}>
                 <TextInput
@@ -81,6 +94,8 @@ const RegistrationScreen = () => {
                   onBlur={() => {
                     setActiveInput("none");
                   }}
+                  value={passwordValue}
+                  onChangeText={setPasswordValue}
                 />
                 <Pressable
                   onPress={handlePasswordVisibility}
@@ -96,6 +111,7 @@ const RegistrationScreen = () => {
                   styles.primaryBtn,
                   pressed && styles.activePrimaryBtn,
                 ]}
+                onPress={handleCLickBtn}
               >
                 <Text style={styles.textPrimaryBtn}>Зареєстуватися</Text>
               </Pressable>
