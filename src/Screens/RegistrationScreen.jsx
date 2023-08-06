@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 import UserPhoto from "../components/UserPhoto";
+import { useNavigation } from "@react-navigation/native";
 
 const RegistrationScreen = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -20,11 +21,7 @@ const RegistrationScreen = () => {
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
 
-  const handleCLickBtn = () => {
-    console.log(`Login: ${loginValue}`);
-    console.log(`Email: ${emailValue}`);
-    console.log(`Password: ${passwordValue}`);
-  };
+  const navigation = useNavigation();
 
   const handlePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
@@ -111,11 +108,11 @@ const RegistrationScreen = () => {
                   styles.primaryBtn,
                   pressed && styles.activePrimaryBtn,
                 ]}
-                onPress={handleCLickBtn}
+                onPress={() => navigation.navigate("Home")}
               >
                 <Text style={styles.textPrimaryBtn}>Зареєстуватися</Text>
               </Pressable>
-              <Pressable>
+              <Pressable onPress={() => navigation.navigate("Login")}>
                 {({ pressed }) => (
                   <Text
                     style={[
