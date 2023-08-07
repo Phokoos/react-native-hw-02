@@ -1,9 +1,11 @@
 import { StyleSheet, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import { Image } from "react-native";
 
 export const UserPhoto = () => {
   return (
     <View style={styles.photoCard}>
+      <Image source={require("../../img/User.png")} />
       <AntDesign
         style={styles.plusIcon}
         name="pluscircleo"
@@ -19,7 +21,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     position: "absolute",
-    bottom: 489,
+    top: -63,
     left: "50%",
     transform: [{ translateX: -50 }],
 

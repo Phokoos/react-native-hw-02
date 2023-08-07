@@ -6,8 +6,31 @@ import { StyleSheet } from "react-native";
 import { View } from "react-native";
 import CreatePostScreen from "./CreatePostScreen";
 import ProfileScreen from "./ProfileScreen";
+import { Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const Tabs = createBottomTabNavigator();
+
+const ArrowBack = () => {
+  const navigation = useNavigation();
+  return (
+    <Pressable
+      style={{
+        paddingLeft: 16,
+        paddingTop: 7,
+      }}
+      onPress={() => navigation.navigate("PostsScreen")}
+    >
+      <Image
+        source={require("../../img/svgIcons/arrowLeft.png")}
+        style={{
+          height: 24,
+          width: 24,
+        }}
+      />
+    </Pressable>
+  );
+};
 
 const Home = () => {
   return (
@@ -45,15 +68,8 @@ const Home = () => {
           title: "Створити публікацію",
           tabBarLabel: "",
           headerTitleAlign: "center",
-          headerRight: () => {
-            <Image
-              source={require("../../img/svgIcons/arrowLeft.png")}
-              // style={{
-              //   backgroundColor: "red",
-              // }}
-            />;
-          },
-          // tabBarStyle: { display: "none" },
+          headerLeft: ArrowBack,
+          tabBarStyle: { display: "none" },
           tabBarIcon: () => (
             <Image
               style={styles.tabIconAdd}

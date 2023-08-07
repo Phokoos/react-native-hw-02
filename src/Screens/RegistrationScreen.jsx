@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
   registrationWrapper: {
     paddingHorizontal: 16,
     width: "100%",
-    // height: 549,
     backgroundColor: "white",
     borderTopEndRadius: 25,
     borderTopLeftRadius: 25,
