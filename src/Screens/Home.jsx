@@ -24,8 +24,8 @@ const Home = () => {
       }}
     >
       <Tabs.Screen
-        name="CreatePostScreen"
-        component={CreatePostScreen}
+        name="PostsScreen"
+        component={PostsScreen}
         options={{
           title: "Публікації",
           tabBarLabel: "",
@@ -39,12 +39,21 @@ const Home = () => {
         }}
       />
       <Tabs.Screen
-        name="PostsScreen"
-        component={PostsScreen}
+        name="CreatePostScreen"
+        component={CreatePostScreen}
         options={{
           title: "Створити публікацію",
           tabBarLabel: "",
           headerTitleAlign: "center",
+          headerRight: () => {
+            <Image
+              source={require("../../img/svgIcons/arrowLeft.png")}
+              // style={{
+              //   backgroundColor: "red",
+              // }}
+            />;
+          },
+          // tabBarStyle: { display: "none" },
           tabBarIcon: () => (
             <Image
               style={styles.tabIconAdd}
