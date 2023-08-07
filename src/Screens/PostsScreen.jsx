@@ -23,10 +23,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 32,
 
-    // borderTopWidth: 1,
-    // borderBottomColor: "#212121",
-    // borderTopColor: "#212121",
-
     backgroundColor: "#FFFFFF",
   },
   userContainer: {
