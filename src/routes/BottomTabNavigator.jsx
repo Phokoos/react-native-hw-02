@@ -1,49 +1,24 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import PostsScreen from "./PostsScreen";
+import PostsScreen from "../Screens/PostsScreen";
 import { Image } from "react-native";
-import Svg from "react-native-svg";
 import { StyleSheet } from "react-native";
-import { View } from "react-native";
-import CreatePostScreen from "./CreatePostScreen";
-import ProfileScreen from "./ProfileScreen";
+import CreatePostScreen from "../Screens/CreatePostScreen";
+import ProfileScreen from "../Screens/ProfileScreen";
 import { Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import ArrowBack from "../components/ArrowBack";
 
 const Tabs = createBottomTabNavigator();
 
-const ArrowBack = () => {
+const BottomTabNavigator = () => {
   const navigation = useNavigation();
-  return (
-    <Pressable
-      style={{
-        paddingLeft: 16,
-        paddingTop: 7,
-      }}
-      onPress={() => navigation.navigate("PostsScreen")}
-    >
-      <Image
-        source={require("../../img/svgIcons/arrowLeft.png")}
-        style={{
-          height: 24,
-          width: 24,
-        }}
-      />
-    </Pressable>
-  );
-};
-
-const Home = () => {
   return (
     <Tabs.Navigator
       initialRouteName={"PostsScreen"}
-      // barStyle={{
-      //   height: 83,
-      //   backgroundColor: "red",
-      // }}
       screenOptions={{
-        tabBarStyle: {
-          height: 83,
-        },
+        tabBarActiveBackgroundColor: "#FF6C00",
+        tabBarStyle: styles.tabBatStyle,
+        tabBarItemStyle: styles.tabBarIconStyle,
       }}
     >
       <Tabs.Screen
@@ -53,6 +28,15 @@ const Home = () => {
           title: "Публікації",
           tabBarLabel: "",
           headerTitleAlign: "center",
+
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate("Login")}
+              style={{ marginRight: 16 }}
+            >
+              <Image source={require("../../img/svgIcons/logOut.png")} />
+            </Pressable>
+          ),
           tabBarIcon: () => (
             <Image
               style={styles.tabIconGrid}
@@ -98,26 +82,42 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
-  tabIconGrid: {
-    marginTop: 45,
-    marginBottom: 34,
-    // width: 70,
-    // height: 40,
+  tabBatStyle: {
+    height: 83,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
-  tabIconAdd: {
-    marginTop: 45,
+  tabBarIconStyle: {
+    marginTop: 9,
     marginBottom: 34,
-    width: 70,
+    marginHorizontal: 10,
+    maxWidth: 70,
     height: 40,
-  },
-  tabIconUser: {
-    marginTop: 45,
-    marginBottom: 34,
-  },
+
+    paddingTop: 12,
+
+    borderRadius: 20,
+  }, // tabIconGrid: {
+  //   marginTop: 45,
+  //   marginBottom: 34,
+  //   // width: 70,
+  //   // height: 40,
+  // },
+  // tabIconAdd: {
+  //   marginTop: 45,
+  //   marginBottom: 34,
+  //   width: 70,
+  //   height: 40,
+  // },
+  // tabIconUser: {
+  //   marginTop: 45,
+  //   marginBottom: 34,
+  // },
   // tabBarLabel: {
   //   // height: 100,
   //   backgroundColor: "red",
   // },
 });
 
-export default Home;
+export default BottomTabNavigator;

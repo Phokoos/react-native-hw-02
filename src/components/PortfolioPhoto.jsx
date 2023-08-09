@@ -11,13 +11,26 @@ const PortfolioPhoto = ({ path, name, comments, likes, locations }) => {
       <View style={styles.descriptionPhoto}>
         <View style={styles.reviewsPart}>
           <View style={styles.reviewsBlock}>
-            <Image source={require("../../img/svgIcons/comment.png")} />
-            <Text style={styles.reviewsText}>{comments}</Text>
+            {comments > 0 ? (
+              <Image source={require("../../img/svgIcons/comment.png")} />
+            ) : (
+              <Image source={require("../../img/svgIcons/commentGrey.png")} />
+            )}
+            <Text
+              style={[
+                styles.reviewsText,
+                comments === 0 && { color: "#bdbdbd" },
+              ]}
+            >
+              {comments}
+            </Text>
           </View>
-          <View style={styles.reviewsBlock}>
-            <Image source={require("../../img/svgIcons/like.png")} />
-            <Text style={styles.reviewsText}>{likes}</Text>
-          </View>
+          {likes && (
+            <View style={styles.reviewsBlock}>
+              <Image source={require("../../img/svgIcons/like.png")} />
+              <Text style={styles.reviewsText}>{likes}</Text>
+            </View>
+          )}
         </View>
         <View style={styles.locationBlock}>
           <Image source={require("../../img/svgIcons/mapPin.png")} />

@@ -71,7 +71,7 @@ const CreatePostScreen = () => {
           </View>
           <Pressable
             disabled={disabledBtn}
-            style={({ pressed, disabled }) => [
+            style={({ pressed }) => [
               styles.primaryBtn,
               pressed && styles.activePrimaryBtn,
               disabledBtn && styles.disabledBtn,

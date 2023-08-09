@@ -1,4 +1,6 @@
+import { ScrollView } from "react-native";
 import { Image, StyleSheet, Text, View } from "react-native";
+import PortfolioPhoto from "../components/PortfolioPhoto";
 
 const PostsScreen = () => {
   return (
@@ -13,6 +15,21 @@ const PostsScreen = () => {
           <Text style={styles.userEmailText}>email@example.com</Text>
         </View>
       </View>
+      <ScrollView style={{ marginTop: 90 }}>
+        <PortfolioPhoto
+          path={require("../../img/userPortfolio/1_photo.png")}
+          name="Ліс"
+          comments={0}
+          locations="Ivano-Frankivs'k Region, Ukraine"
+        />
+        <PortfolioPhoto
+          path={require("../../img/userPortfolio/2_photo.png")}
+          name="Старий будиночок у Венеції"
+          comments={0}
+          likes={2}
+          locations="Ukraine"
+        />
+      </ScrollView>
     </View>
   );
 };
@@ -21,7 +38,7 @@ const styles = StyleSheet.create({
   container: {
     height: "100%",
     paddingHorizontal: 16,
-    paddingVertical: 32,
+    paddingTop: 32,
 
     backgroundColor: "#FFFFFF",
   },
