@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 import UserPhoto from "../components/UserPhoto";
+import { useNavigation } from "@react-navigation/native";
 
 const RegistrationScreen = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -20,14 +21,16 @@ const RegistrationScreen = () => {
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
 
-  const handleCLickBtn = () => {
-    console.log(`Login: ${loginValue}`);
-    console.log(`Email: ${emailValue}`);
-    console.log(`Password: ${passwordValue}`);
-  };
+  const navigation = useNavigation();
 
   const handlePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
+  };
+
+  const handlePressLogin = () => {
+    setEmailValue("");
+    setPasswordValue("");
+    navigation.navigate("Home");
   };
 
   return (
@@ -111,11 +114,11 @@ const RegistrationScreen = () => {
                   styles.primaryBtn,
                   pressed && styles.activePrimaryBtn,
                 ]}
-                onPress={handleCLickBtn}
+                onPress={handlePressLogin}
               >
                 <Text style={styles.textPrimaryBtn}>Зареєстуватися</Text>
               </Pressable>
-              <Pressable>
+              <Pressable onPress={() => navigation.navigate("Login")}>
                 {({ pressed }) => (
                   <Text
                     style={[
@@ -165,7 +168,6 @@ const styles = StyleSheet.create({
   registrationWrapper: {
     paddingHorizontal: 16,
     width: "100%",
-    // height: 549,
     backgroundColor: "white",
     borderTopEndRadius: 25,
     borderTopLeftRadius: 25,

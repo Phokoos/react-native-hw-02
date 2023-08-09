@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import {
   ImageBackground,
@@ -17,14 +18,16 @@ const LoginScreen = () => {
 
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
-
-  const handleCLickBtn = () => {
-    console.log(`Email: ${emailValue}`);
-    console.log(`Password: ${passwordValue}`);
-  };
+  const navigation = useNavigation();
 
   const handlePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
+  };
+
+  const handlePressLogin = () => {
+    setEmailValue("");
+    setPasswordValue("");
+    navigation.navigate("Home");
   };
 
   return (
@@ -92,11 +95,11 @@ const LoginScreen = () => {
                   styles.primaryBtn,
                   pressed && styles.activePrimaryBtn,
                 ]}
-                onPress={handleCLickBtn}
+                onPress={handlePressLogin}
               >
                 <Text style={styles.textPrimaryBtn}>Увійти</Text>
               </Pressable>
-              <Pressable>
+              <Pressable onPress={() => navigation.navigate("Registration")}>
                 {({ pressed }) => (
                   <Text
                     style={[
