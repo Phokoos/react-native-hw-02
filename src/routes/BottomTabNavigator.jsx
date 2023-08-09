@@ -7,6 +7,8 @@ import ProfileScreen from "../Screens/ProfileScreen";
 import { Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import ArrowBack from "../components/ArrowBack";
+import { Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 
 const Tabs = createBottomTabNavigator();
 
@@ -38,10 +40,7 @@ const BottomTabNavigator = () => {
             </Pressable>
           ),
           tabBarIcon: () => (
-            <Image
-              style={styles.tabIconGrid}
-              source={require("../../img/svgIcons/grid.png")}
-            />
+            <Ionicons name="md-grid-outline" size={18} color="#212121CC" />
           ),
         }}
       />
@@ -53,12 +52,10 @@ const BottomTabNavigator = () => {
           tabBarLabel: "",
           headerTitleAlign: "center",
           headerLeft: ArrowBack,
+          tabBarItemStyle: styles.tabBarIconAdd,
           tabBarStyle: { display: "none" },
           tabBarIcon: () => (
-            <Image
-              style={styles.tabIconAdd}
-              source={require("../../img/svgIcons/newPost.png")}
-            />
+            <AntDesign name="plus" size={18} color="#212121CC" />
           ),
         }}
       />
@@ -70,10 +67,7 @@ const BottomTabNavigator = () => {
           tabBarLabel: "",
           headerShown: false,
           tabBarIcon: () => (
-            <Image
-              style={styles.tabIconUser}
-              source={require("../../img/svgIcons/user.png")}
-            />
+            <AntDesign name="user" size={18} color="#212121CC" />
           ),
         }}
       />
@@ -90,34 +84,27 @@ const styles = StyleSheet.create({
   },
   tabBarIconStyle: {
     marginTop: 9,
-    marginBottom: 34,
+    marginBottom: 25,
     marginHorizontal: 10,
     maxWidth: 70,
     height: 40,
 
-    paddingTop: 12,
+    paddingTop: 8,
 
     borderRadius: 20,
-  }, // tabIconGrid: {
-  //   marginTop: 45,
-  //   marginBottom: 34,
-  //   // width: 70,
-  //   // height: 40,
-  // },
-  // tabIconAdd: {
-  //   marginTop: 45,
-  //   marginBottom: 34,
-  //   width: 70,
-  //   height: 40,
-  // },
-  // tabIconUser: {
-  //   marginTop: 45,
-  //   marginBottom: 34,
-  // },
-  // tabBarLabel: {
-  //   // height: 100,
-  //   backgroundColor: "red",
-  // },
+  },
+  tabBarIconAdd: {
+    marginTop: 9,
+    marginBottom: 25,
+    marginHorizontal: 10,
+    maxWidth: 70,
+    height: 40,
+
+    paddingTop: 8,
+
+    backgroundColor: "#FF6C00",
+    borderRadius: 20,
+  },
 });
 
 export default BottomTabNavigator;

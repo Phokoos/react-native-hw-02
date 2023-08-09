@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
   descriptionPhoto: {
     display: "flex",
     flexDirection: "row",
-    // justifyContent: "space-evenly",
     justifyContent: "space-between",
   },
   reviewsPart: {
