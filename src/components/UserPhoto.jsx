@@ -22,8 +22,7 @@ const styles = StyleSheet.create({
     height: 120,
     position: "absolute",
     top: -63,
-    left: "50%",
-    transform: [{ translateX: -50 }],
+    alignSelf: "center",
 
     borderRadius: 16,
     backgroundColor: "#F6F6F6",

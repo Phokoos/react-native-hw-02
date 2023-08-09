@@ -24,6 +24,12 @@ const LoginScreen = () => {
     setPasswordVisibility(!passwordVisibility);
   };
 
+  const handlePressLogin = () => {
+    setEmailValue("");
+    setPasswordValue("");
+    navigation.navigate("Home");
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
@@ -89,7 +95,7 @@ const LoginScreen = () => {
                   styles.primaryBtn,
                   pressed && styles.activePrimaryBtn,
                 ]}
-                onPress={() => navigation.navigate("Home")}
+                onPress={handlePressLogin}
               >
                 <Text style={styles.textPrimaryBtn}>Увійти</Text>
               </Pressable>
