@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import RegistrationScreen from "../Screens/RegistrationScreen";
 import LoginScreen from "../Screens/LoginScreen";
 import BottomTabNavigator from "./BottomTabNavigator";
+import CommentsScreen from "../Screens/CommentsScreen";
 
 const MainStack = createStackNavigator();
 
@@ -32,6 +33,14 @@ const RootNavigator = () => {
           name="Home"
           component={BottomTabNavigator}
           options={{ headerShown: false }}
+        />
+        <MainStack.Screen
+          name="Comments"
+          component={CommentsScreen}
+          options={{
+            title: "Коментарі",
+            headerTitleAlign: "center",
+          }}
         />
       </MainStack.Navigator>
     </NavigationContainer>

@@ -1,9 +1,13 @@
-import { Text } from "react-native";
+import { Pressable, Text } from "react-native";
 import { Image } from "react-native";
 import { StyleSheet } from "react-native";
 import { View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import CommentsScreen from "../Screens/CommentsScreen";
+import { createStackNavigator } from "@react-navigation/stack";
 
 const PortfolioPhoto = ({ path, name, comments, likes, locations }) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.photoContainer}>
       <Image source={path} style={styles.photo} />
@@ -12,7 +16,13 @@ const PortfolioPhoto = ({ path, name, comments, likes, locations }) => {
         <View style={styles.reviewsPart}>
           <View style={styles.reviewsBlock}>
             {comments > 0 ? (
-              <Image source={require("../../img/svgIcons/comment.png")} />
+              <Pressable
+                onPress={() => {
+                  navigation.navigate("Comments");
+                }}
+              >
+                <Image source={require("../../img/svgIcons/comment.png")} />
+              </Pressable>
             ) : (
               <Image source={require("../../img/svgIcons/commentGrey.png")} />
             )}

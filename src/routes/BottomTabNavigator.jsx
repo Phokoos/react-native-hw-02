@@ -9,6 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import ArrowBack from "../components/ArrowBack";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import CommentsScreen from "../Screens/CommentsScreen";
 
 const Tabs = createBottomTabNavigator();
 
