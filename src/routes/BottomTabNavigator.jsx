@@ -18,7 +18,7 @@ const BottomTabNavigator = () => {
     <Tabs.Navigator
       initialRouteName={"PostsScreen"}
       screenOptions={{
-        tabBarActiveBackgroundColor: "#FF6C00",
+        // tabBarActiveBackgroundColor: "#FF6C00",
         tabBarStyle: styles.tabBatStyle,
         tabBarItemStyle: styles.tabBarIconStyle,
       }}
@@ -39,8 +39,12 @@ const BottomTabNavigator = () => {
               <Image source={require("../../img/svgIcons/logOut.png")} />
             </Pressable>
           ),
-          tabBarIcon: () => (
-            <Ionicons name="md-grid-outline" size={18} color="#212121CC" />
+          tabBarIcon: ({ focused }) => (
+            <Ionicons
+              name="md-grid-outline"
+              size={18}
+              style={{ color: focused ? "#FF6C00" : "#212121CC" }}
+            />
           ),
         }}
       />
@@ -66,8 +70,12 @@ const BottomTabNavigator = () => {
           title: "Публікації",
           tabBarLabel: "",
           headerShown: false,
-          tabBarIcon: () => (
-            <AntDesign name="user" size={18} color="#212121CC" />
+          tabBarIcon: ({ focused }) => (
+            <AntDesign
+              name="user"
+              size={18}
+              style={{ color: focused ? "#FF6C00" : "#212121CC" }}
+            />
           ),
         }}
       />

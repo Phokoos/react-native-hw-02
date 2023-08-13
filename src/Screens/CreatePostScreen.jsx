@@ -1,4 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
+import { Camera } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
+import * as Location from "expo-location";
 import { useEffect, useState } from "react";
 import {
   Keyboard,
@@ -6,6 +9,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import { Pressable } from "react-native";
 import { Button } from "react-native";
@@ -18,18 +22,67 @@ const CreatePostScreen = () => {
   const [disabledBtn, setDisabledBtn] = useState(true);
   const [photoName, setPhotoName] = useState("");
   const [inputLocation, setInputLocation] = useState("");
+  const [location, setLocation] = useState(null);
+  const [loader, setLoader] = useState(false);
 
   const handleDelete = () => {
     setInputLocation(""), setPhotoName("");
+    setPhotoUri(null);
   };
 
   useEffect(() => {
-    if (photoName !== "" && inputLocation !== "") {
+    if (photoName !== "" && inputLocation !== "" && photoUri !== null) {
       setDisabledBtn(false);
     } else {
       setDisabledBtn(true);
     }
-  }, [photoName, inputLocation]);
+  }, [photoName, inputLocation, photoUri]);
+
+  // Camera part
+  const [hasPermission, setHasPermission] = useState(null);
+  const [cameraRef, setCameraRef] = useState(null);
+  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [photoUri, setPhotoUri] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      await MediaLibrary.requestPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestBackgroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+      }
+    })();
+  }, []);
+
+  const handlePressPublish = async () => {
+    setLoader(true);
+    let location = await Location.getCurrentPositionAsync({});
+    const coords = {
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    };
+    setLocation(coords);
+    setPhotoUri(null);
+    setPhotoName("");
+    setInputLocation("");
+    setLoader(false);
+    navigate.navigate("PostsScreen");
+  };
+
+  if (hasPermission === null) {
+    return <View />;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
+  // Close Camera part
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -38,16 +91,50 @@ const CreatePostScreen = () => {
         keyboardVerticalOffset={-550}
       >
         <View style={styles.container}>
-          <View style={styles.photoContainer}>
-            <Image
-              source={require("../../img/addPhoto.png")}
-              style={styles.photo}
+          {loader ? (
+            <ActivityIndicator
+              size="large"
+              color="#FF6C00"
+              style={{ height: 240 }}
             />
-            <Image
-              source={require("../../img/svgIcons/addPhoto.png")}
-              style={styles.addPhotoIcon}
-            />
-          </View>
+          ) : (
+            <View style={styles.photoContainer}>
+              {!photoUri ? (
+                <Camera style={styles.photo} type={type} ref={setCameraRef}>
+                  <Pressable
+                    onPress={async () => {
+                      if (cameraRef) {
+                        const { uri } = await cameraRef.takePictureAsync();
+                        await MediaLibrary.createAssetAsync(uri);
+                        setPhotoUri(uri);
+                      }
+                    }}
+                  >
+                    <Image
+                      source={require("../../img/svgIcons/addPhoto.png")}
+                      style={styles.addPhotoIcon}
+                    />
+                  </Pressable>
+                </Camera>
+              ) : (
+                <View style={styles.photo}>
+                  <Image
+                    style={{
+                      width: "100%",
+                      height: 240,
+                    }}
+                    source={{
+                      uri: photoUri,
+                    }}
+                  />
+                  <Image
+                    source={require("../../img/svgIcons/addPhoto.png")}
+                    style={styles.addPhotoIcon}
+                  />
+                </View>
+              )}
+            </View>
+          )}
 
           <Text style={styles.textUnderPhoto}>Редагувати фото</Text>
           <TextInput
@@ -56,7 +143,6 @@ const CreatePostScreen = () => {
             style={styles.textPhotoDesc}
             placeholder="Назва..."
           />
-
           <View style={styles.locationContainers}>
             <TextInput
               value={inputLocation}
@@ -76,6 +162,7 @@ const CreatePostScreen = () => {
               pressed && styles.activePrimaryBtn,
               disabledBtn && styles.disabledBtn,
             ]}
+            onPress={handlePressPublish}
           >
             <Text
               style={[
@@ -109,6 +196,7 @@ const styles = StyleSheet.create({
   },
   photo: {
     width: "100%",
+    height: 240,
     marginBottom: 8,
 
     borderRadius: 8,

@@ -17,7 +17,7 @@ const ProfileScreen = () => {
       style={styles.backgroundImg}
     >
       <View style={styles.container}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.userWrapper}>
             <Pressable
               onPress={() => navigation.navigate("Login")}

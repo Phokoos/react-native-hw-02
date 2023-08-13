@@ -5,7 +5,7 @@ import PortfolioPhoto from "../components/PortfolioPhoto";
 const PostsScreen = () => {
   return (
     <View style={styles.container}>
-      <View style={styles.userContainer}>
+      {/* <View style={styles.userContainer}>
         <Image
           source={require("../../img/User.jpg")}
           style={styles.userPhoto}
@@ -14,8 +14,21 @@ const PostsScreen = () => {
           <Text style={styles.userNameText}>Natali Romanova</Text>
           <Text style={styles.userEmailText}>email@example.com</Text>
         </View>
-      </View>
-      <ScrollView style={{ marginTop: 90 }}>
+      </View> */}
+      <ScrollView
+        // style={{ marginTop: 90 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.userContainer}>
+          <Image
+            source={require("../../img/User.jpg")}
+            style={styles.userPhoto}
+          />
+          <View style={styles.userInfoContainer}>
+            <Text style={styles.userNameText}>Natali Romanova</Text>
+            <Text style={styles.userEmailText}>email@example.com</Text>
+          </View>
+        </View>
         <PortfolioPhoto
           path={require("../../img/userPortfolio/1_photo.png")}
           name="Ліс"
@@ -51,6 +64,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     marginRight: 8,
+    marginBottom: 32,
   },
   userInfoContainer: {
     height: 60,
