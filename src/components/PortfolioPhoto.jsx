@@ -43,7 +43,19 @@ const PortfolioPhoto = ({ path, name, comments, likes, locations }) => {
           )}
         </View>
         <View style={styles.locationBlock}>
-          <Image source={require("../../img/svgIcons/mapPin.png")} />
+          <Pressable
+            onPress={() => {
+              navigation.navigate("Map", {
+                state: {
+                  latitude: 48.296900931371106,
+                  longitude: 25.9244770620231,
+                },
+              });
+            }}
+          >
+            <Image source={require("../../img/svgIcons/mapPin.png")} />
+          </Pressable>
+
           <Text style={styles.locationText}>{locations}</Text>
         </View>
       </View>

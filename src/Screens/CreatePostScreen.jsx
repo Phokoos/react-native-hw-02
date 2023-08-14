@@ -54,7 +54,7 @@ const CreatePostScreen = () => {
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestBackgroundPermissionsAsync();
+      let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         console.log("Permission to access location was denied");
       }
@@ -68,6 +68,7 @@ const CreatePostScreen = () => {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
     };
+
     setLocation(coords);
     setPhotoUri(null);
     setPhotoName("");

@@ -4,6 +4,7 @@ import RegistrationScreen from "../Screens/RegistrationScreen";
 import LoginScreen from "../Screens/LoginScreen";
 import BottomTabNavigator from "./BottomTabNavigator";
 import CommentsScreen from "../Screens/CommentsScreen";
+import MapScreen from "../Screens/MapScreen";
 
 const MainStack = createStackNavigator();
 
@@ -39,6 +40,14 @@ const RootNavigator = () => {
           component={CommentsScreen}
           options={{
             title: "Коментарі",
+            headerTitleAlign: "center",
+          }}
+        />
+        <MainStack.Screen
+          name="Map"
+          component={MapScreen}
+          options={{
+            title: "Карта",
             headerTitleAlign: "center",
           }}
         />
