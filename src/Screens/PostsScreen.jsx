@@ -5,20 +5,7 @@ import PortfolioPhoto from "../components/PortfolioPhoto";
 const PostsScreen = () => {
   return (
     <View style={styles.container}>
-      {/* <View style={styles.userContainer}>
-        <Image
-          source={require("../../img/User.jpg")}
-          style={styles.userPhoto}
-        />
-        <View style={styles.userInfoContainer}>
-          <Text style={styles.userNameText}>Natali Romanova</Text>
-          <Text style={styles.userEmailText}>email@example.com</Text>
-        </View>
-      </View> */}
-      <ScrollView
-        // style={{ marginTop: 90 }}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.userContainer}>
           <Image
             source={require("../../img/User.jpg")}

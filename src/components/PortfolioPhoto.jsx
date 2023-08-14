@@ -3,8 +3,6 @@ import { Image } from "react-native";
 import { StyleSheet } from "react-native";
 import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import CommentsScreen from "../Screens/CommentsScreen";
-import { createStackNavigator } from "@react-navigation/stack";
 
 const PortfolioPhoto = ({ path, name, comments, likes, locations }) => {
   const navigation = useNavigation();

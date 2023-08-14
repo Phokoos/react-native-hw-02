@@ -9,7 +9,6 @@ import { useNavigation } from "@react-navigation/native";
 import ArrowBack from "../components/ArrowBack";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import CommentsScreen from "../Screens/CommentsScreen";
 
 const Tabs = createBottomTabNavigator();
 
@@ -19,7 +18,6 @@ const BottomTabNavigator = () => {
     <Tabs.Navigator
       initialRouteName={"PostsScreen"}
       screenOptions={{
-        // tabBarActiveBackgroundColor: "#FF6C00",
         tabBarStyle: styles.tabBatStyle,
         tabBarItemStyle: styles.tabBarIconStyle,
       }}

@@ -38,8 +38,8 @@ const CreatePostScreen = () => {
     }
   }, [photoName, inputLocation, photoUri]);
 
-  // Camera part
   const [hasPermission, setHasPermission] = useState(null);
+  const [hasPermissionLocation, setHasPermissionLocation] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [photoUri, setPhotoUri] = useState(null);
@@ -55,9 +55,7 @@ const CreatePostScreen = () => {
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-      }
+      setHasPermissionLocation(status === "granted");
     })();
   }, []);
 
@@ -83,7 +81,12 @@ const CreatePostScreen = () => {
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
-  // Close Camera part
+  if (hasPermissionLocation === null) {
+    return <View />;
+  }
+  if (hasPermissionLocation === false) {
+    return <Text>No access to location</Text>;
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -223,7 +226,6 @@ const styles = StyleSheet.create({
     color: "#212121",
     fontFamily: "Roboto-Medium",
     fontSize: 16,
-    // fontWeight: 500,
 
     borderBottomColor: "#E8E8E8",
     borderBottomWidth: 1,
