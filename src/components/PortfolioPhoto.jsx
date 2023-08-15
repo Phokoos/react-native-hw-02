@@ -22,7 +22,13 @@ const PortfolioPhoto = ({ path, name, comments, likes, locations }) => {
                 <Image source={require("../../img/svgIcons/comment.png")} />
               </Pressable>
             ) : (
-              <Image source={require("../../img/svgIcons/commentGrey.png")} />
+              <Pressable
+                onPress={() => {
+                  navigation.navigate("Comments");
+                }}
+              >
+                <Image source={require("../../img/svgIcons/commentGrey.png")} />
+              </Pressable>
             )}
             <Text
               style={[

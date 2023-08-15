@@ -4,15 +4,12 @@ import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
 import { useEffect, useState } from "react";
 import {
-  Keyboard,
   KeyboardAvoidingView,
   TextInput,
-  TouchableWithoutFeedback,
   Platform,
   ActivityIndicator,
 } from "react-native";
 import { Pressable } from "react-native";
-import { Button } from "react-native";
 import { Image, StyleSheet, Text } from "react-native";
 import { View } from "react-native";
 
@@ -67,12 +64,15 @@ const CreatePostScreen = () => {
       longitude: location.coords.longitude,
     };
 
+    console.log(coords);
+
     setLocation(coords);
     setPhotoUri(null);
     setPhotoName("");
     setInputLocation("");
     setLoader(false);
-    navigate.navigate("PostsScreen");
+
+    navigate.goBack();
   };
 
   if (hasPermission === null) {
@@ -89,102 +89,114 @@ const CreatePostScreen = () => {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={-550}
-      >
-        <View style={styles.container}>
-          {loader ? (
-            <ActivityIndicator
-              size="large"
-              color="#FF6C00"
-              style={{ height: 240 }}
-            />
-          ) : (
-            <View style={styles.photoContainer}>
-              {!photoUri ? (
-                <Camera style={styles.photo} type={type} ref={setCameraRef}>
-                  <Pressable
-                    onPress={async () => {
-                      if (cameraRef) {
-                        const { uri } = await cameraRef.takePictureAsync();
-                        await MediaLibrary.createAssetAsync(uri);
-                        setPhotoUri(uri);
-                      }
-                    }}
-                  >
-                    <Image
-                      source={require("../../img/svgIcons/addPhoto.png")}
-                      style={styles.addPhotoIcon}
-                    />
-                  </Pressable>
-                </Camera>
-              ) : (
-                <View style={styles.photo}>
-                  <Image
-                    style={{
-                      width: "100%",
-                      height: 240,
-                    }}
-                    source={{
-                      uri: photoUri,
-                    }}
-                  />
-                  <Image
-                    source={require("../../img/svgIcons/addPhoto.png")}
-                    style={styles.addPhotoIcon}
-                  />
-                </View>
-              )}
-            </View>
-          )}
-
-          <Text style={styles.textUnderPhoto}>Редагувати фото</Text>
-          <TextInput
-            value={photoName}
-            onChangeText={setPhotoName}
-            style={styles.textPhotoDesc}
-            placeholder="Назва..."
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={-550}
+    >
+      <View style={styles.container}>
+        {loader ? (
+          <ActivityIndicator
+            size="large"
+            color="#FF6C00"
+            style={{ height: 240 }}
           />
-          <View style={styles.locationContainers}>
-            <TextInput
-              value={inputLocation}
-              onChangeText={setInputLocation}
-              style={[{ paddingLeft: 28 }, styles.textPhotoDesc]}
-              placeholder="Місцевість..."
-            />
-            <Image
-              source={require("../../img/svgIcons/mapPin.png")}
-              style={styles.mapIcon}
-            />
+        ) : (
+          <View style={styles.photoContainer}>
+            {!photoUri ? (
+              <View style={styles.photo}>
+                <Camera
+                  style={{ height: 240 }}
+                  type={type}
+                  ref={setCameraRef}
+                />
+                <Pressable
+                  onPress={async () => {
+                    if (cameraRef) {
+                      const { uri } = await cameraRef.takePictureAsync();
+                      await MediaLibrary.createAssetAsync(uri);
+                      setPhotoUri(uri);
+                    }
+                  }}
+                  style={styles.addPhotoIcon}
+                >
+                  <Image source={require("../../img/svgIcons/addPhoto.png")} />
+                </Pressable>
+              </View>
+            ) : (
+              <View style={styles.photo}>
+                <Image
+                  style={{
+                    width: "100%",
+                    height: 240,
+                  }}
+                  source={{
+                    uri: photoUri,
+                  }}
+                />
+                <Pressable
+                  style={styles.addPhotoIcon}
+                  onPress={() => setPhotoUri(null)}
+                >
+                  <Image source={require("../../img/svgIcons/addPhoto.png")} />
+                </Pressable>
+              </View>
+            )}
           </View>
+        )}
+
+        <Text style={styles.textUnderPhoto}>Редагувати фото</Text>
+        <TextInput
+          value={photoName}
+          onChangeText={setPhotoName}
+          style={styles.textPhotoDesc}
+          placeholder="Назва..."
+        />
+        <View style={styles.locationContainers}>
+          <TextInput
+            value={inputLocation}
+            onChangeText={setInputLocation}
+            style={[{ paddingLeft: 28 }, styles.textPhotoDesc]}
+            placeholder="Місцевість..."
+          />
           <Pressable
-            disabled={disabledBtn}
-            style={({ pressed }) => [
-              styles.primaryBtn,
-              pressed && styles.activePrimaryBtn,
-              disabledBtn && styles.disabledBtn,
-            ]}
-            onPress={handlePressPublish}
+            style={styles.mapIcon}
+            onPress={() => {
+              navigate.navigate("Map", {
+                state: {
+                  latitude: 48.296900931371106,
+                  longitude: 25.9244770620231,
+                },
+              });
+            }}
           >
-            <Text
-              style={[
-                styles.textPrimaryBtn,
-                disabledBtn && styles.disabledBtnText,
-              ]}
-            >
-              Опублікувати
-            </Text>
+            <Image source={require("../../img/svgIcons/mapPin.png")} />
           </Pressable>
-          <View style={styles.bottomDeleteContainer}>
-            <Pressable onPress={handleDelete}>
-              <Image source={require("../../img/svgIcons/delete.png")} />
-            </Pressable>
-          </View>
         </View>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+        <Pressable
+          disabled={disabledBtn}
+          style={({ pressed }) => [
+            styles.primaryBtn,
+            pressed && styles.activePrimaryBtn,
+            disabledBtn && styles.disabledBtn,
+          ]}
+          onPress={handlePressPublish}
+        >
+          <Text
+            style={[
+              styles.textPrimaryBtn,
+              disabledBtn && styles.disabledBtnText,
+            ]}
+          >
+            Опублікувати
+          </Text>
+        </Pressable>
+        <View style={styles.bottomDeleteContainer}>
+          <Pressable onPress={handleDelete}>
+            <Image source={require("../../img/svgIcons/delete.png")} />
+          </Pressable>
+        </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -199,6 +211,7 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   photo: {
+    position: "relative",
     width: "100%",
     height: 240,
     marginBottom: 8,
@@ -210,6 +223,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
     top: 90,
+  },
+  addPhotoIconWithCamera: {
+    position: "absolute",
+    alignSelf: "center",
+    justifyContent: "center",
+    backgroundColor: "red",
+    top: 0,
   },
   textUnderPhoto: {
     marginBottom: 48,
@@ -235,7 +255,6 @@ const styles = StyleSheet.create({
   },
   mapIcon: {
     position: "absolute",
-    top: 3,
   },
   primaryBtn: {
     minHeight: 51,

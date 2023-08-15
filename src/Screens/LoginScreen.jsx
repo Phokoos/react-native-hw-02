@@ -154,7 +154,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     width: "100%",
     backgroundColor: "white",
-    borderRadius: 25,
+    borderTopEndRadius: 25,
+    borderTopStartRadius: 25,
   },
   title: {
     marginTop: 32,

@@ -60,6 +60,7 @@ const BottomTabNavigator = () => {
           tabBarIcon: () => (
             <AntDesign name="plus" size={18} color="#212121CC" />
           ),
+          unmountOnBlur: true,
         }}
       />
       <Tabs.Screen
