@@ -3,6 +3,8 @@ import { useFonts } from 'expo-font';
 import React from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 import RootNavigator from './src/routes/RootNavigator';
+import { Provider } from 'react-redux';
+import { store } from './src/redux/store';
 
 const MainStack = createStackNavigator();
 
@@ -20,6 +22,8 @@ export default function App() {
 	}
 
 	return (
-		<RootNavigator />
+		<Provider store={store}>
+			<RootNavigator />
+		</Provider>
 	);
 }

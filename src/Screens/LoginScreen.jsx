@@ -11,6 +11,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { handleSetEmail, handleSetPassword } from "../redux/auth/authSlice";
 
 const LoginScreen = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -20,14 +22,21 @@ const LoginScreen = () => {
   const [passwordValue, setPasswordValue] = useState("");
   const navigation = useNavigation();
 
+  // Redux
+  const emailRedux = useSelector((state) => state.auth.email);
+  const passwordRedux = useSelector((state) => state.auth.password);
+  const dispatch = useDispatch();
+
   const handlePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
   };
 
-  const handlePressLogin = () => {
+  const handlePressLogin = async () => {
     setEmailValue("");
     setPasswordValue("");
-    navigation.navigate("Home");
+    console.log(`Email: ${emailRedux}`, `Password: ${passwordRedux}`);
+    await dispatch(handleSetEmail({ email: emailValue }));
+    await dispatch(handleSetPassword({ password: passwordValue }));
   };
 
   return (
