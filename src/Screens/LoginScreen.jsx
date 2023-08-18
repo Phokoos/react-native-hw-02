@@ -13,6 +13,8 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { handleSetEmail, handleSetPassword } from "../redux/auth/authSlice";
+import { loginDB, logoutDB, registerDB, updateUserName } from "../api/auth";
+import { getDataFromFirestore, writeDataToFirestore } from "../api/gallery";
 
 const LoginScreen = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -37,6 +39,17 @@ const LoginScreen = () => {
     console.log(`Email: ${emailRedux}`, `Password: ${passwordRedux}`);
     await dispatch(handleSetEmail({ email: emailValue }));
     await dispatch(handleSetPassword({ password: passwordValue }));
+
+    await registerDB({
+      email: emailValue,
+      password: passwordValue,
+      name: "Mykola",
+    })
+      .then((data) => {
+        console.log("data after register: ", data);
+        // console.log(data.accessToken);
+      })
+      .catch((error) => console.log(error));
   };
 
   return (

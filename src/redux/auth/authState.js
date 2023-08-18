@@ -1,7 +1,10 @@
 const initialState = {
 	email: "",
-	password: "",
-	name: ""
+	name: "",
+	uid: "",
+	token: "",
+	isLoading: false,
+	error: ""
 }
 
 export default initialState

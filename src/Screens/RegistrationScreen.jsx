@@ -9,9 +9,14 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   View,
+  ActivityIndicator,
 } from "react-native";
 import UserPhoto from "../components/UserPhoto";
 import { useNavigation } from "@react-navigation/native";
+import { registerDB } from "../api/auth";
+import { registerThunk } from "../redux/auth/authThunks";
+import { useDispatch, useSelector } from "react-redux";
+import { isLoading } from "../redux/auth/authSelectors";
 
 const RegistrationScreen = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -23,14 +28,26 @@ const RegistrationScreen = () => {
 
   const navigation = useNavigation();
 
+  const dispatch = useDispatch();
+  const loading = useSelector(isLoading);
+
   const handlePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
   };
 
-  const handlePressLogin = () => {
+  const handlePressLogin = async () => {
     setEmailValue("");
     setPasswordValue("");
-    navigation.navigate("Home");
+
+    await dispatch(
+      registerThunk({
+        name: loginValue,
+        email: emailValue,
+        password: passwordValue,
+      })
+    );
+
+    // navigation.navigate("Home");
   };
 
   return (
@@ -47,7 +64,15 @@ const RegistrationScreen = () => {
           >
             <View style={styles.registrationWrapper}>
               <UserPhoto />
-              <Text style={styles.title}>Реєстрація</Text>
+              {loading ? (
+                <ActivityIndicator
+                  size="large"
+                  color="#FF6C00"
+                  style={styles.title}
+                />
+              ) : (
+                <Text style={styles.title}>Реєстрація</Text>
+              )}
               <TextInput
                 style={[
                   styles.textInput,

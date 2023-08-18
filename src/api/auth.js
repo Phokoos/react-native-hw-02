@@ -2,21 +2,24 @@ import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
 	onAuthStateChanged,
-	updateProfile
+	updateProfile,
+	signOut
 } from 'firebase/auth';
 import { auth, db } from './config';
 import { collection, doc, setDoc } from 'firebase/firestore';
 
+export const registerDB = async ({ email, password, name }) => {
+	try {
+		const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+		await updateUserName(name)
+		userCredential.user.name = name
+		return await userCredential
+	} catch (error) {
+		throw new Error(error.message)
+	}
 
-// або більш короткий запис цієї функції
-export const registerDB = ({ email, password }) =>
-	createUserWithEmailAndPassword(auth, email, password);
+}
 
-export const authStateChanged = async (onChange = () => { }) => {
-	onAuthStateChanged((user) => {
-		onChange(user);
-	});
-};
 
 export const loginDB = async ({ email, password }) => {
 	try {
@@ -27,9 +30,25 @@ export const loginDB = async ({ email, password }) => {
 	}
 };
 
+export const logoutDB = async () => {
+	try {
+		await signOut(auth).then((data) => {
+			console.log("Logout success, data: ", data)
+		})
+	} catch (error) {
+		console.log("Error in logout: ", error)
+	}
+}
+
 export const updateUserName = async (name) => {
-	const userNameRef = doc(db, 'users', auth.currentUser.uid);
-	await setDoc(userNameRef, { name }, { merge: true })
+	try {
+		const userNameRef = doc(db, 'users', auth.currentUser.uid);
+		const data = await setDoc(userNameRef, { name }, { merge: true })
+		return data
+	} catch (error) {
+		throw new Error({ message: error.message })
+	}
+
 }
 
 
