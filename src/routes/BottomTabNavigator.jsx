@@ -9,11 +9,17 @@ import { useNavigation } from "@react-navigation/native";
 import ArrowBack from "../components/ArrowBack";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { logoutDB } from "../api/auth";
 
 const Tabs = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
   const navigation = useNavigation();
+
+  handlePressLogOutIcon = async () => {
+    await logoutDB();
+    navigation.navigate("Login");
+  };
   return (
     <Tabs.Navigator
       initialRouteName={"PostsScreen"}
@@ -32,7 +38,7 @@ const BottomTabNavigator = () => {
 
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate("Login")}
+              onPress={handlePressLogOutIcon}
               style={{ marginRight: 16 }}
             >
               <Image source={require("../../img/svgIcons/logOut.png")} />

@@ -7,9 +7,15 @@ import PortfolioPhoto from "../components/PortfolioPhoto";
 import { Image } from "react-native";
 import { Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { logoutDB } from "../api/auth";
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
+
+  handlePressLogOutIcon = async () => {
+    await logoutDB();
+    navigation.navigate("Login");
+  };
   return (
     <ImageBackground
       source={require("../../img/Photo_BG.jpg")}
@@ -20,7 +26,7 @@ const ProfileScreen = () => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.userWrapper}>
             <Pressable
-              onPress={() => navigation.navigate("Login")}
+              onPress={handlePressLogOutIcon}
               style={styles.logOutIcon}
             >
               <Image source={require("../../img/svgIcons/logOut.png")} />

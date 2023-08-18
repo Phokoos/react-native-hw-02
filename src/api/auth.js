@@ -6,7 +6,9 @@ import {
 	signOut
 } from 'firebase/auth';
 import { auth, db } from './config';
-import { collection, doc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
+import { useDispatch } from 'react-redux';
+import { setIsLoggedIn, setUserDetails } from '../redux/auth/authSlice';
 
 export const registerDB = async ({ email, password, name }) => {
 	try {
@@ -17,27 +19,6 @@ export const registerDB = async ({ email, password, name }) => {
 	} catch (error) {
 		throw new Error(error.message)
 	}
-
-}
-
-
-export const loginDB = async ({ email, password }) => {
-	try {
-		const credentials = await signInWithEmailAndPassword(auth, email, password);
-		return credentials.user;
-	} catch (error) {
-		throw error;
-	}
-};
-
-export const logoutDB = async () => {
-	try {
-		await signOut(auth).then((data) => {
-			console.log("Logout success, data: ", data)
-		})
-	} catch (error) {
-		console.log("Error in logout: ", error)
-	}
 }
 
 export const updateUserName = async (name) => {
@@ -46,24 +27,71 @@ export const updateUserName = async (name) => {
 		const data = await setDoc(userNameRef, { name }, { merge: true })
 		return data
 	} catch (error) {
-		throw new Error({ message: error.message })
+		throw new Error(error.message)
 	}
+}
 
+export const loginDB = async ({ email, password }) => {
+	try {
+		const userCredential = await signInWithEmailAndPassword(auth, email, password);
+		const userName = await getUserNameFromFirestore();
+		userCredential.user.name = userName
+		return await userCredential;
+	} catch (error) {
+		throw new Error(error.message)
+	}
+};
+
+export const getUserNameFromFirestore = async () => {
+	try {
+		const docRef = doc(db, "users", auth.currentUser.uid);
+		const docSnap = await getDoc(docRef);
+
+		if (docSnap.exists()) {
+			return await docSnap.data().name;
+		} else {
+			return "No information!";
+		}
+	} catch (error) {
+		throw new Error(error.message)
+	}
+};
+
+export const isAuthUserCheck = async () => {
+	let obj = {
+		name: "",
+		email: "",
+		loggedIn: false,
+		uid: "",
+		token: ""
+	};
+	await onAuthStateChanged(auth, (user) => {
+		if (user) {
+			const { name, email, accessToken, uid } = user
+			obj = {
+				name,
+				email,
+				token: accessToken,
+				uid,
+				loggedIn: true
+			}
+		} else {
+			obj = {
+				loggedIn: false
+			}
+		}
+	});
+	return await obj
+}
+
+export const logoutDB = async () => {
+	try {
+		await signOut(auth).then((data) => {
+			console.log("Logout success, data: ")
+		})
+	} catch (error) {
+		console.log("Error in logout: ", error)
+	}
 }
 
 
-export const updateUserProfile = async (update) => {
-
-	const user = auth.currentUser;
-
-	// якщо такий користувач знайдений
-	if (user) {
-
-		// оновлюємо його профайл
-		try {
-			await updateProfile(user, update);
-		} catch (error) {
-			throw error
-		}
-	}
-};

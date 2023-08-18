@@ -16,14 +16,15 @@ export const writeDataToFirestore = async () => {
 	}
 };
 
-export const getDataFromFirestore = async () => {
+export const getDataFromFirestoreGallery = async () => {
 	try {
 		const snapshot = await getDocs(collection(db, 'gallery'));
 		const array = [];
 
-		snapshot.forEach((doc) => array.push(doc.data()));
+		// snapshot.forEach((doc) => array.push(doc.data()));
+		snapshot.forEach((doc) => console.log(doc));
 
-		return array
+		// return array
 	} catch (error) {
 		console.log(error);
 		throw error;

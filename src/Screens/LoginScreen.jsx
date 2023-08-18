@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ImageBackground,
   Keyboard,
@@ -10,11 +10,31 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   View,
+  ActivityIndicator,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { handleSetEmail, handleSetPassword } from "../redux/auth/authSlice";
-import { loginDB, logoutDB, registerDB, updateUserName } from "../api/auth";
-import { getDataFromFirestore, writeDataToFirestore } from "../api/gallery";
+import {
+  handleSetEmail,
+  handleSetPassword,
+  setIsLoggedIn,
+  setUserDetails,
+} from "../redux/auth/authSlice";
+import {
+  getDataFromFirestore,
+  isAuthUserCheck,
+  loginDB,
+  logoutDB,
+  registerDB,
+  updateUserName,
+} from "../api/auth";
+import { getDataFromFirestoreGallery } from "../api/gallery";
+import { loginThunk } from "../redux/auth/authThunks";
+import {
+  authErrorSelector,
+  isAuthInSelector,
+  isLoading,
+} from "../redux/auth/authSelectors";
+import { Alert } from "react-native";
 
 const LoginScreen = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -28,6 +48,21 @@ const LoginScreen = () => {
   const emailRedux = useSelector((state) => state.auth.email);
   const passwordRedux = useSelector((state) => state.auth.password);
   const dispatch = useDispatch();
+  const loading = useSelector(isLoading);
+  const errorAuth = useSelector(authErrorSelector);
+  const isLoggedIn = useSelector(isAuthInSelector);
+
+  const checkAuthIn = async () => {
+    const userDetails = await isAuthUserCheck();
+    if (userDetails.loggedIn) {
+      dispatch(setUserDetails(userDetails));
+    } else {
+      dispatch(setIsLoggedIn(false));
+    }
+  };
+  useEffect(() => {
+    checkAuthIn();
+  }, []);
 
   const handlePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
@@ -36,21 +71,25 @@ const LoginScreen = () => {
   const handlePressLogin = async () => {
     setEmailValue("");
     setPasswordValue("");
-    console.log(`Email: ${emailRedux}`, `Password: ${passwordRedux}`);
-    await dispatch(handleSetEmail({ email: emailValue }));
-    await dispatch(handleSetPassword({ password: passwordValue }));
 
-    await registerDB({
-      email: emailValue,
-      password: passwordValue,
-      name: "Mykola",
-    })
-      .then((data) => {
-        console.log("data after register: ", data);
-        // console.log(data.accessToken);
+    dispatch(
+      loginThunk({
+        email: emailValue,
+        password: passwordValue,
       })
-      .catch((error) => console.log(error));
+    );
   };
+
+  useEffect(() => {
+    if (isLoggedIn === true) {
+      navigation.navigate("Home");
+    }
+  }, [isLoggedIn]);
+  useEffect(() => {
+    if (errorAuth !== "") {
+      Alert.alert(errorAuth);
+    }
+  }, [errorAuth]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -65,7 +104,15 @@ const LoginScreen = () => {
             style={styles.backgroundImg}
           >
             <View style={styles.registrationWrapper}>
-              <Text style={styles.title}>Увійти</Text>
+              {loading ? (
+                <ActivityIndicator
+                  size="large"
+                  color="#FF6C00"
+                  style={styles.title}
+                />
+              ) : (
+                <Text style={styles.title}>Увійти</Text>
+              )}
               <TextInput
                 style={[
                   styles.textInput,

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ImageBackground,
   Keyboard,
@@ -13,10 +13,17 @@ import {
 } from "react-native";
 import UserPhoto from "../components/UserPhoto";
 import { useNavigation } from "@react-navigation/native";
-import { registerDB } from "../api/auth";
+import { isAuthUserCheck, registerDB } from "../api/auth";
 import { registerThunk } from "../redux/auth/authThunks";
 import { useDispatch, useSelector } from "react-redux";
-import { isLoading } from "../redux/auth/authSelectors";
+import {
+  authErrorSelector,
+  authStateSelector,
+  isAuthInSelector,
+  isLoading,
+} from "../redux/auth/authSelectors";
+import { Alert } from "react-native";
+import { setIsLoggedIn, setUserDetails } from "../redux/auth/authSlice";
 
 const RegistrationScreen = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -30,6 +37,22 @@ const RegistrationScreen = () => {
 
   const dispatch = useDispatch();
   const loading = useSelector(isLoading);
+  const errorAuth = useSelector(authErrorSelector);
+  const isLoggedIn = useSelector(isAuthInSelector);
+  //Test
+  const allStateCheck = useSelector(authStateSelector);
+  //Test
+  const checkAuthIn = async () => {
+    const userDetails = await isAuthUserCheck();
+    if (userDetails.loggedIn) {
+      dispatch(setUserDetails(userDetails));
+    } else {
+      dispatch(setIsLoggedIn(false));
+    }
+  };
+  useEffect(() => {
+    checkAuthIn();
+  }, []);
 
   const handlePasswordVisibility = () => {
     setPasswordVisibility(!passwordVisibility);
@@ -46,9 +69,18 @@ const RegistrationScreen = () => {
         password: passwordValue,
       })
     );
-
-    // navigation.navigate("Home");
   };
+
+  useEffect(() => {
+    if (isLoggedIn === true) {
+      navigation.navigate("Home");
+    }
+  }, [isLoggedIn]);
+  useEffect(() => {
+    if (errorAuth !== "") {
+      Alert.alert(errorAuth);
+    }
+  }, [errorAuth]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

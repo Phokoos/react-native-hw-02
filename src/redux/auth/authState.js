@@ -4,7 +4,8 @@ const initialState = {
 	uid: "",
 	token: "",
 	isLoading: false,
-	error: ""
+	error: "",
+	loggedIn: false
 }
 
 export default initialState
